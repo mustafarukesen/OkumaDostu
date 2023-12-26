@@ -8,18 +8,20 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class ModelMapperManager implements ModelMapperService{
 
 	private ModelMapper modelMapper;
-	
+
+	public ModelMapperManager(ModelMapper modelMapper) {
+		this.modelMapper = modelMapper;
+	}
+
 	@Override
 	public ModelMapper forResponse() {
 		this.modelMapper.getConfiguration()
 		.setAmbiguityIgnored(true)
 		.setMatchingStrategy(MatchingStrategies.LOOSE);
-		
+
 		return this.modelMapper;
 	}
 
@@ -28,7 +30,7 @@ public class ModelMapperManager implements ModelMapperService{
 		this.modelMapper.getConfiguration()
 		.setAmbiguityIgnored(true)
 		.setMatchingStrategy(MatchingStrategies.STANDARD);
-		
+
 		return this.modelMapper;
 	}
 

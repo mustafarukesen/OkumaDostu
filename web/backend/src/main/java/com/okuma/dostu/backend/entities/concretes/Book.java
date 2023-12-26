@@ -8,47 +8,46 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "books")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "books")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "book_id")
+    @Column(name = "id")
     private int id;
 
-    @ManyToOne()
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "isbn_13")
+    private String isbn13;
+
+    @Column(name = "page_count")
+    private int pageCount;
+
+    @Column(name = "published_date")
+    private LocalDate publishedDate;
+
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "thumbnail")
+    private String thumbnail;
+
+    @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
 
-    @Column(name = "book_description")
-    private String bookDescription;
-
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Column(name = "book_isbn_13")
-    private String bookIsbn13;
-
-    @Column(name = "book_name")
-    private String bookName;
-
-    @Column(name = "book_page_count")
-    private int bookPageCount;
-
-    @Column(name = "published_date")
-    private LocalDate bookPublishedDate;
-
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
-
-    @Column(name = "book_thumbnail")
-    private String bookThumbnail;
-
-
 
 }

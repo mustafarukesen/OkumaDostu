@@ -1,4 +1,4 @@
-package com.okuma.dostu.backend.entities.dtos;
+package com.okuma.dostu.backend.business.dtos.responses.publishers;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookWithCategoryDto {
+public class GetAllPublisherResponse {
     private int id;
-    private String bookName;
-    private String categoryName;
+    private String name;
 }

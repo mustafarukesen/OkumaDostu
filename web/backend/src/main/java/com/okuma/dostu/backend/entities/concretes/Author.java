@@ -8,19 +8,19 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "authors")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "authors")
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "author_id")
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "author_name")
-    private String authorName;
+    @Column(name = "name")
+    private String name;
 
     @OneToMany(mappedBy = "author")
     private List<Book> books;
