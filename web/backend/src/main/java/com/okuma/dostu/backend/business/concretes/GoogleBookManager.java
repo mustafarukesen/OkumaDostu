@@ -9,30 +9,39 @@ import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.AuthorRepository;
 import com.okuma.dostu.backend.dataAccess.abstracts.CategoryRepository;
 import com.okuma.dostu.backend.dataAccess.abstracts.PublisherRepository;
-import com.okuma.dostu.backend.entities.concretes.*;
-import lombok.AllArgsConstructor;
+import com.okuma.dostu.backend.entities.concretes.Author;
+import com.okuma.dostu.backend.entities.concretes.Book;
+import com.okuma.dostu.backend.entities.concretes.Category;
+import com.okuma.dostu.backend.entities.concretes.Publisher;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GoogleBookManager implements GoogleBookService {
 
 
-    private BookService bookService;
-    private CategoryRepository categoryRepository;
-    private AuthorRepository authorRepository;
-    private PublisherRepository publisherRepository;
-    private ModelMapperService modelMapperService;
+    private final BookService bookService;
+    private final CategoryRepository categoryRepository;
+    private final AuthorRepository authorRepository;
+    private final PublisherRepository publisherRepository;
+    private final ModelMapperService modelMapperService;
+
+    @Value("${google.books.api.url}")
+    private String googleBooksApiUrl;
 
     @Override
     public void searchAndSaveBooks(String authorName) {
         String[] words = authorName.split(" ");
-        String apiUrl = "https://www.googleapis.com/books/v1/volumes?q=inauthor:" + words[0] + "%20" + words[1]
-                + "&key=AIzaSyDZNDUsyQqVLeompmkIQ4TAkEvRICoidAE&lang=tr";
+        String apiUrl = String.format(googleBooksApiUrl, words[0], words[1]);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -43,7 +52,7 @@ public class GoogleBookManager implements GoogleBookService {
             for (JsonNode item : itemsArray) {
                 Book book = createBookFromJsonNode(item.path("volumeInfo"));
 
-                if (book.getCategory() == null || book.getPublisher() == null || book.getAuthor() == null)
+                if ((book.getCategory() == null) || (book.getPublisher() == null) || (book.getAuthor() == null) || (book.getIsbn13() == null || book.getIsbn13().isEmpty()) || (book.getDescription() == null || book.getDescription().isEmpty()) || (book.getTitle() == null || book.getTitle().isEmpty()) || (book.getPublishedDate() == null) || (book.getPageCount() < 0) || (book.getThumbnail() == null || book.getThumbnail().isEmpty()))
                     continue;
 
                 CreateBookRequest createBookRequest = modelMapperService.forRequest().map(book, CreateBookRequest.class);
@@ -61,17 +70,18 @@ public class GoogleBookManager implements GoogleBookService {
         book.setTitle(volumeInfo.path("title").asText());
         book.setPageCount(volumeInfo.path("pageCount").asInt());
         book.setIsbn13(getIsbn13(volumeInfo.path("industryIdentifiers")));
-        book.setAuthor(getAuthor(volumeInfo.path("authors")));
-        book.setCategory(getCategory(volumeInfo.path("categories")));
-        book.setPublisher(getPublisher(volumeInfo.path("publisher")));
         book.setDescription(volumeInfo.path("description").asText());
         book.setThumbnail(volumeInfo.path("imageLinks").path("thumbnail").asText());
 
         String publishedDate = volumeInfo.path("publishedDate").asText();
         if (!publishedDate.isEmpty()) {
-            book.setPublishedDate(LocalDate.parse(publishedDate));
+            book.setPublishedDate(convertToPublishedDate(publishedDate));
         }
-
+        if ((book.getIsbn13() == null || book.getIsbn13().isEmpty()) || (book.getDescription() == null || book.getDescription().isEmpty()) || (book.getTitle() == null || book.getTitle().isEmpty()) || (book.getPublishedDate() == null) || (book.getPageCount() < 0) || (book.getThumbnail() == null || book.getThumbnail().isEmpty()))
+            return book;
+        book.setAuthor(getAuthor(volumeInfo.path("authors")));
+        book.setCategory(getCategory(volumeInfo.path("categories")));
+        book.setPublisher(getPublisher(volumeInfo.path("publisher")));
         return book;
     }
 
@@ -87,7 +97,8 @@ public class GoogleBookManager implements GoogleBookService {
     private Author getAuthor(JsonNode authorsArray) {
         if (authorsArray.isArray() && !authorsArray.isEmpty()) {
             String authorName = authorsArray.get(0).asText();
-            if (authorName != null) {
+            if (authorName != null && !authorName.isEmpty()) {
+                authorName = formatName(authorName);
                 Author author = authorRepository.findByName(authorName);
                 if (author == null) {
                     author = new Author();
@@ -103,7 +114,8 @@ public class GoogleBookManager implements GoogleBookService {
     private Category getCategory(JsonNode categoriesArray) {
         if (categoriesArray.isArray() && !categoriesArray.isEmpty()) {
             String categoryName = categoriesArray.get(0).asText();
-            if (categoryName != null) {
+            if (categoryName != null && !categoryName.isEmpty()) {
+                categoryName = formatName(categoryName);
                 Category category = categoryRepository.findByName(categoryName);
                 if (category == null) {
                     category = new Category();
@@ -118,7 +130,8 @@ public class GoogleBookManager implements GoogleBookService {
 
     private Publisher getPublisher(JsonNode publisherNode) {
         String publisherName = publisherNode.asText();
-        if (publisherName != null) {
+        if (publisherName != null && !publisherName.isEmpty()) {
+            publisherName = formatName(publisherName);
             Publisher publisher = publisherRepository.findByName(publisherName);
             if (publisher == null) {
                 publisher = new Publisher();
@@ -128,5 +141,43 @@ public class GoogleBookManager implements GoogleBookService {
             return publisher;
         }
         return null;
+    }
+
+    private LocalDate convertToPublishedDate(String date) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ISO_DATE;
+
+        try {
+            return LocalDate.parse(date, inputFormatter);
+        } catch (DateTimeParseException e) {
+            String year = date.substring(0, 4);
+            String formattedDate = String.format("%s-01-01", year);
+            return LocalDate.parse(formattedDate, outputFormatter);
+        }
+    }
+
+    private String formatName(String name) {
+
+        String cleanedName = removeNonLatinCharacters(name);
+
+        String[] nameParts = cleanedName.split("\\s+");
+        StringBuilder formattedName = new StringBuilder();
+
+        for (String part : nameParts) {
+            if (!part.isEmpty()) {
+                if (formattedName.length() > 0) {
+                    formattedName.append(" ");
+                }
+                formattedName.append(part.substring(0, 1).toUpperCase());
+                formattedName.append(part.substring(1).toLowerCase());
+            }
+        }
+
+        return formattedName.toString();
+    }
+
+    private String removeNonLatinCharacters(String input) {
+        return Normalizer.normalize(input, Normalizer.Form.NFD)
+                .replaceAll("[^\\p{ASCII}]", "");
     }
 }

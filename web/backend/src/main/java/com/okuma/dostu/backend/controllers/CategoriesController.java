@@ -4,25 +4,29 @@ import com.okuma.dostu.backend.business.abstracts.CategoryService;
 import com.okuma.dostu.backend.business.dtos.requests.categories.CreateCategoryRequest;
 import com.okuma.dostu.backend.business.dtos.responses.categories.CreatedCategoryResponse;
 import com.okuma.dostu.backend.business.dtos.responses.categories.GetAllCategoryResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/v1/categories")
 @AllArgsConstructor
 public class CategoriesController {
     CategoryService categoryService;
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<GetAllCategoryResponse>> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }
 
     @PostMapping
-    public CreatedCategoryResponse add(@RequestBody CreateCategoryRequest createCategoryRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreatedCategoryResponse add(@Valid @RequestBody CreateCategoryRequest createCategoryRequest) {
         return categoryService.add(createCategoryRequest);
     }
 }
