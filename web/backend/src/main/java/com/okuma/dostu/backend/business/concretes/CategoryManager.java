@@ -2,8 +2,11 @@ package com.okuma.dostu.backend.business.concretes;
 
 import com.okuma.dostu.backend.business.abstracts.CategoryService;
 import com.okuma.dostu.backend.business.dtos.requests.categories.CreateCategoryRequest;
+import com.okuma.dostu.backend.business.dtos.requests.categories.UpdateCategoryRequest;
 import com.okuma.dostu.backend.business.dtos.responses.categories.CreatedCategoryResponse;
+import com.okuma.dostu.backend.business.dtos.responses.categories.DeletedCategoryResponse;
 import com.okuma.dostu.backend.business.dtos.responses.categories.GetAllCategoryResponse;
+import com.okuma.dostu.backend.business.dtos.responses.categories.UpdatedCategoryResponse;
 import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.CategoryRepository;
 import com.okuma.dostu.backend.entities.concretes.Category;
@@ -40,5 +43,28 @@ public class CategoryManager implements CategoryService {
         CreatedCategoryResponse createdCategoryResponse = modelMapperService.forResponse().map(createdCategory, CreatedCategoryResponse.class);
 
         return createdCategoryResponse;
+    }
+
+    @Override
+    public UpdatedCategoryResponse update(UpdateCategoryRequest updateCategoryRequest) {
+        Category category = modelMapperService.forRequest().map(updateCategoryRequest, Category.class);
+
+        Category updatedCategory = categoryRepository.save(category);
+
+        UpdatedCategoryResponse updatedCategoryResponse = modelMapperService.forResponse().map(updatedCategory, UpdatedCategoryResponse.class);
+
+        return updatedCategoryResponse;
+    }
+
+    @Override
+    public DeletedCategoryResponse delete(int id) {
+        Category categoryToDelete = new Category();
+        categoryToDelete.setId(id);
+
+        categoryRepository.delete(categoryToDelete);
+
+        DeletedCategoryResponse deletedCategoryResponse = new DeletedCategoryResponse(id);
+
+        return deletedCategoryResponse;
     }
 }

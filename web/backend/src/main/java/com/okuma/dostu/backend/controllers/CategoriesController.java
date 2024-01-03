@@ -2,8 +2,11 @@ package com.okuma.dostu.backend.controllers;
 
 import com.okuma.dostu.backend.business.abstracts.CategoryService;
 import com.okuma.dostu.backend.business.dtos.requests.categories.CreateCategoryRequest;
+import com.okuma.dostu.backend.business.dtos.requests.categories.UpdateCategoryRequest;
 import com.okuma.dostu.backend.business.dtos.responses.categories.CreatedCategoryResponse;
+import com.okuma.dostu.backend.business.dtos.responses.categories.DeletedCategoryResponse;
 import com.okuma.dostu.backend.business.dtos.responses.categories.GetAllCategoryResponse;
+import com.okuma.dostu.backend.business.dtos.responses.categories.UpdatedCategoryResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,19 @@ public class CategoriesController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedCategoryResponse add(@Valid @RequestBody CreateCategoryRequest createCategoryRequest) {
+    public CreatedCategoryResponse add(@RequestBody @Valid CreateCategoryRequest createCategoryRequest) {
         return categoryService.add(createCategoryRequest);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public UpdatedCategoryResponse update(@RequestBody @Valid UpdateCategoryRequest updateCategoryRequest) {
+        return categoryService.update(updateCategoryRequest);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public DeletedCategoryResponse delete(@RequestBody int id) {
+        return categoryService.delete(id);
     }
 }

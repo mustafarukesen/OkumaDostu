@@ -2,8 +2,11 @@ package com.okuma.dostu.backend.controllers;
 
 import com.okuma.dostu.backend.business.abstracts.BookService;
 import com.okuma.dostu.backend.business.dtos.requests.books.CreateBookRequest;
+import com.okuma.dostu.backend.business.dtos.requests.books.UpdateBookRequest;
 import com.okuma.dostu.backend.business.dtos.responses.books.CreatedBookResponse;
+import com.okuma.dostu.backend.business.dtos.responses.books.DeletedBookResponse;
 import com.okuma.dostu.backend.business.dtos.responses.books.GetAllBookResponse;
+import com.okuma.dostu.backend.business.dtos.responses.books.UpdatedBookResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,19 @@ public class BooksController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedBookResponse add(@Valid @RequestBody CreateBookRequest createBookRequest) {
+    public CreatedBookResponse add(@RequestBody @Valid CreateBookRequest createBookRequest) {
         return bookService.add(createBookRequest);
+    }
+
+    @PutMapping
+    @ResponseStatus(HttpStatus.OK)
+    public UpdatedBookResponse update(@RequestBody @Valid UpdateBookRequest updateBookRequest) {
+        return bookService.update(updateBookRequest);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.OK)
+    public DeletedBookResponse delete(@RequestBody int id) {
+        return bookService.delete(id);
     }
 }

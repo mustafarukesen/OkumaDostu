@@ -2,8 +2,11 @@ package com.okuma.dostu.backend.business.concretes;
 
 import com.okuma.dostu.backend.business.abstracts.PublisherService;
 import com.okuma.dostu.backend.business.dtos.requests.publishers.CreatePublisherRequest;
+import com.okuma.dostu.backend.business.dtos.requests.publishers.UpdatePublisherRequest;
 import com.okuma.dostu.backend.business.dtos.responses.publishers.CreatedPublisherResponse;
+import com.okuma.dostu.backend.business.dtos.responses.publishers.DeletedPublisherResponse;
 import com.okuma.dostu.backend.business.dtos.responses.publishers.GetAllPublisherResponse;
+import com.okuma.dostu.backend.business.dtos.responses.publishers.UpdatedPublisherResponse;
 import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.PublisherRepository;
 import com.okuma.dostu.backend.entities.concretes.Publisher;
@@ -40,5 +43,28 @@ public class PublisherManager implements PublisherService {
         CreatedPublisherResponse createdPublisherResponse = modelMapperService.forResponse().map(createdPublisher, CreatedPublisherResponse.class);
 
         return createdPublisherResponse;
+    }
+
+    @Override
+    public UpdatedPublisherResponse update(UpdatePublisherRequest updatePublisherRequest) {
+        Publisher publisher = modelMapperService.forRequest().map(updatePublisherRequest, Publisher.class);
+
+        Publisher updatedPublisher = publisherRepository.save(publisher);
+
+        UpdatedPublisherResponse updatedPublisherResponse = modelMapperService.forResponse().map(updatedPublisher, UpdatedPublisherResponse.class);
+
+        return updatedPublisherResponse;
+    }
+
+    @Override
+    public DeletedPublisherResponse delete(int id) {
+        Publisher publisherToDelete = new Publisher();
+        publisherToDelete.setId(id);
+
+        publisherRepository.delete(publisherToDelete);
+
+        DeletedPublisherResponse deletedPublisherResponse = new DeletedPublisherResponse(id);
+
+        return deletedPublisherResponse;
     }
 }
