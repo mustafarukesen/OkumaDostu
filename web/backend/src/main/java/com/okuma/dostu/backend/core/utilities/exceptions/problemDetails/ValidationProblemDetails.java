@@ -9,7 +9,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class ValidationProblemDetails extends ProblemDetails {
 
-    public ValidationProblemDetails () {
+    public ValidationProblemDetails() {
         setTitle("Validation Rule Violation");
         setDetail("Validation Problem");
         setType("http://localhost:8080/exceptions/validation");

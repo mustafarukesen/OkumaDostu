@@ -1,4 +1,4 @@
-package com.okuma.dostu.backend.core.security.user;
+package com.okuma.dostu.backend.business.dtos.requests.auth;
 
 import lombok.Builder;
 import lombok.Data;

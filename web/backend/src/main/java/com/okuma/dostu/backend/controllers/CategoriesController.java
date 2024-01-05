@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,18 +30,21 @@ public class CategoriesController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('admin:create')")
     public CreatedCategoryResponse add(@RequestBody @Valid CreateCategoryRequest createCategoryRequest) {
         return categoryService.add(createCategoryRequest);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('admin:update')")
     public UpdatedCategoryResponse update(@RequestBody @Valid UpdateCategoryRequest updateCategoryRequest) {
         return categoryService.update(updateCategoryRequest);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('admin:delete')")
     public DeletedCategoryResponse delete(@RequestBody int id) {
         return categoryService.delete(id);
     }

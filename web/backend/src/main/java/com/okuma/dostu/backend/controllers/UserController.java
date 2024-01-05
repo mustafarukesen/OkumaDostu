@@ -1,7 +1,7 @@
 package com.okuma.dostu.backend.controllers;
 
 import com.okuma.dostu.backend.business.abstracts.UserService;
-import com.okuma.dostu.backend.core.security.user.ChangePasswordRequest;
+import com.okuma.dostu.backend.business.dtos.requests.auth.ChangePasswordRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

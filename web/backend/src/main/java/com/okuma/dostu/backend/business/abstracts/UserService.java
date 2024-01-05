@@ -1,6 +1,6 @@
 package com.okuma.dostu.backend.business.abstracts;
 
-import com.okuma.dostu.backend.core.security.user.ChangePasswordRequest;
+import com.okuma.dostu.backend.business.dtos.requests.auth.ChangePasswordRequest;
 
 import java.security.Principal;
 

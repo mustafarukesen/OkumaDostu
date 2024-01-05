@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,18 +30,21 @@ public class BooksController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('admin:create')")
     public CreatedBookResponse add(@RequestBody @Valid CreateBookRequest createBookRequest) {
         return bookService.add(createBookRequest);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('admin:update')")
     public UpdatedBookResponse update(@RequestBody @Valid UpdateBookRequest updateBookRequest) {
         return bookService.update(updateBookRequest);
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('admin:delete')")
     public DeletedBookResponse delete(@RequestBody int id) {
         return bookService.delete(id);
     }

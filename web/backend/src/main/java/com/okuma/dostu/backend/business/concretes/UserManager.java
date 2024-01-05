@@ -1,7 +1,7 @@
 package com.okuma.dostu.backend.business.concretes;
 
 import com.okuma.dostu.backend.business.abstracts.UserService;
-import com.okuma.dostu.backend.core.security.user.ChangePasswordRequest;
+import com.okuma.dostu.backend.business.dtos.requests.auth.ChangePasswordRequest;
 import com.okuma.dostu.backend.core.security.user.User;
 import com.okuma.dostu.backend.dataAccess.abstracts.UserRepository;
 import lombok.RequiredArgsConstructor;
