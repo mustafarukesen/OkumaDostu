@@ -1,5 +1,6 @@
 package com.okuma.dostu.backend.business.rules;
 
+import com.okuma.dostu.backend.business.messages.BookBusinessMessages;
 import com.okuma.dostu.backend.core.utilities.exceptions.types.BusinessException;
 import com.okuma.dostu.backend.dataAccess.abstracts.BookRepository;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ public class BookBusinessRules {
 
     public void checkIfBookNameExists(String name) {
         if (this.bookRepository.existsByTitle(name)) {
-            throw new BusinessException("Book name already exists!");
+            throw new BusinessException(BookBusinessMessages.bookNameAlreadyExists);
         }
     }
 }

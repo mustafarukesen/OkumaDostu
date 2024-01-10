@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/categories")
 @AllArgsConstructor
 public class CategoriesController {
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

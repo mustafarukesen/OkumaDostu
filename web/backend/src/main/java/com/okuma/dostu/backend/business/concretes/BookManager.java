@@ -7,6 +7,7 @@ import com.okuma.dostu.backend.business.dtos.responses.books.CreatedBookResponse
 import com.okuma.dostu.backend.business.dtos.responses.books.DeletedBookResponse;
 import com.okuma.dostu.backend.business.dtos.responses.books.GetAllBookResponse;
 import com.okuma.dostu.backend.business.dtos.responses.books.UpdatedBookResponse;
+import com.okuma.dostu.backend.business.rules.BookBusinessRules;
 import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.BookRepository;
 import com.okuma.dostu.backend.entities.concretes.Book;
@@ -19,8 +20,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class BookManager implements BookService {
-    BookRepository bookRepository;
-    ModelMapperService modelMapperService;
+    private BookRepository bookRepository;
+    private ModelMapperService modelMapperService;
+    private BookBusinessRules bookBusinessRules;
 
     @Override
     public List<GetAllBookResponse> getAll() {
@@ -35,6 +37,8 @@ public class BookManager implements BookService {
 
     @Override
     public CreatedBookResponse add(CreateBookRequest createBookRequest) {
+        bookBusinessRules.checkIfBookNameExists(createBookRequest.getTitle());
+
         Book book = this.modelMapperService.forRequest().map(createBookRequest, Book.class);
 
         Book createdBook = this.bookRepository.save(book);
@@ -67,6 +71,4 @@ public class BookManager implements BookService {
 
         return deletedBookResponse;
     }
-
-    //private BookBusinessRules bookBusinessRules;
 }

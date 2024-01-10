@@ -7,6 +7,7 @@ import com.okuma.dostu.backend.business.dtos.responses.publishers.CreatedPublish
 import com.okuma.dostu.backend.business.dtos.responses.publishers.DeletedPublisherResponse;
 import com.okuma.dostu.backend.business.dtos.responses.publishers.GetAllPublisherResponse;
 import com.okuma.dostu.backend.business.dtos.responses.publishers.UpdatedPublisherResponse;
+import com.okuma.dostu.backend.business.rules.PublisherBusinessRules;
 import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.PublisherRepository;
 import com.okuma.dostu.backend.entities.concretes.Publisher;
@@ -19,8 +20,9 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class PublisherManager implements PublisherService {
-    PublisherRepository publisherRepository;
-    ModelMapperService modelMapperService;
+    private PublisherRepository publisherRepository;
+    private ModelMapperService modelMapperService;
+    private PublisherBusinessRules publisherBusinessRules;
 
 
     @Override
@@ -36,6 +38,8 @@ public class PublisherManager implements PublisherService {
 
     @Override
     public CreatedPublisherResponse add(CreatePublisherRequest createPublisherRequest) {
+        publisherBusinessRules.checkIfPublisherNameExists(createPublisherRequest.getName());
+
         Publisher publisher = modelMapperService.forRequest().map(createPublisherRequest, Publisher.class);
 
         Publisher createdPublisher = publisherRepository.save(publisher);

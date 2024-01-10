@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/authors")
 @AllArgsConstructor
 public class AuthorsController {
-    AuthorService authorService;
+    private AuthorService authorService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -41,7 +41,7 @@ public class AuthorsController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public DeletedAuthorResponse delete(@RequestBody @Valid int id) {
+    public DeletedAuthorResponse delete(@RequestBody int id) {
         return authorService.delete(id);
     }
 

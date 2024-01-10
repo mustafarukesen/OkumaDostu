@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/publishers")
 @AllArgsConstructor
 public class PublishersController {
-    PublisherService publisherService;
+    private PublisherService publisherService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

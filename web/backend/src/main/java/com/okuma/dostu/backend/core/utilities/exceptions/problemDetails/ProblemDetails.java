@@ -11,5 +11,4 @@ public class ProblemDetails {
     private String title;
     private String detail;
     private String status;
-    private String type;
 }

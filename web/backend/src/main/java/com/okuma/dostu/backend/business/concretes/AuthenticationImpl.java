@@ -5,6 +5,7 @@ import com.okuma.dostu.backend.business.abstracts.AuthenticationService;
 import com.okuma.dostu.backend.business.dtos.requests.auth.LoginRequest;
 import com.okuma.dostu.backend.business.dtos.requests.auth.RegisterRequest;
 import com.okuma.dostu.backend.business.dtos.responses.auth.AuthenticationResponse;
+import com.okuma.dostu.backend.business.rules.AuthenticationBusinessRules;
 import com.okuma.dostu.backend.core.security.jwt.JwtService;
 import com.okuma.dostu.backend.core.security.token.Token;
 import com.okuma.dostu.backend.core.security.token.TokenRepository;
@@ -32,10 +33,12 @@ public class AuthenticationImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
-
+    private final AuthenticationBusinessRules authenticationBusinessRules;
 
     @Override
     public AuthenticationResponse register(RegisterRequest registerRequest) {
+        authenticationBusinessRules.checkIfEmailAddressAlreadyExists(registerRequest.getEmail());
+
         var user = User.builder()
                 .firstName(registerRequest.getFirstName())
                 .lastName(registerRequest.getLastName())

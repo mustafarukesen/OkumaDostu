@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/books")
 @AllArgsConstructor
 public class BooksController {
-    BookService bookService;
+    private BookService bookService;
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)

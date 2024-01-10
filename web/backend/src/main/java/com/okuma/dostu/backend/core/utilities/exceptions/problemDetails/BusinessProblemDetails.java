@@ -4,7 +4,6 @@ public class BusinessProblemDetails extends ProblemDetails {
 
     public BusinessProblemDetails() {
         setTitle("Business Rule Violation");
-        setType("http://localhost/exceptions/business");
         setStatus("500");
     }
 }

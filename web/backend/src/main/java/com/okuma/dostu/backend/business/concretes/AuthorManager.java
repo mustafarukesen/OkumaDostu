@@ -7,6 +7,7 @@ import com.okuma.dostu.backend.business.dtos.responses.authors.CreatedAuthorResp
 import com.okuma.dostu.backend.business.dtos.responses.authors.DeletedAuthorResponse;
 import com.okuma.dostu.backend.business.dtos.responses.authors.GetAllAuthorResponse;
 import com.okuma.dostu.backend.business.dtos.responses.authors.UpdatedAuthorResponse;
+import com.okuma.dostu.backend.business.rules.AuthorBusinessRules;
 import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.AuthorRepository;
 import com.okuma.dostu.backend.entities.concretes.Author;
@@ -20,8 +21,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class AuthorManager implements AuthorService {
 
-    AuthorRepository authorRepository;
-    ModelMapperService modelMapperService;
+    private AuthorRepository authorRepository;
+    private ModelMapperService modelMapperService;
+    private AuthorBusinessRules authorBusinessRules;
 
     @Override
     public List<GetAllAuthorResponse> getAll() {
@@ -36,6 +38,8 @@ public class AuthorManager implements AuthorService {
 
     @Override
     public CreatedAuthorResponse add(CreateAuthorRequest createAuthorRequest) {
+        authorBusinessRules.checkIfAuthorNameExists(createAuthorRequest.getName());
+
         Author author = this.modelMapperService.forRequest().map(createAuthorRequest, Author.class);
 
         Author createdAuthor = authorRepository.save(author);

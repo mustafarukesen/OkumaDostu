@@ -7,6 +7,7 @@ import com.okuma.dostu.backend.business.dtos.responses.categories.CreatedCategor
 import com.okuma.dostu.backend.business.dtos.responses.categories.DeletedCategoryResponse;
 import com.okuma.dostu.backend.business.dtos.responses.categories.GetAllCategoryResponse;
 import com.okuma.dostu.backend.business.dtos.responses.categories.UpdatedCategoryResponse;
+import com.okuma.dostu.backend.business.rules.CategoryBusinessRules;
 import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.CategoryRepository;
 import com.okuma.dostu.backend.entities.concretes.Category;
@@ -20,8 +21,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CategoryManager implements CategoryService {
 
-    CategoryRepository categoryRepository;
-    ModelMapperService modelMapperService;
+    private CategoryRepository categoryRepository;
+    private ModelMapperService modelMapperService;
+    private CategoryBusinessRules categoryBusinessRules;
 
     @Override
     public List<GetAllCategoryResponse> getAll() {
@@ -36,6 +38,8 @@ public class CategoryManager implements CategoryService {
 
     @Override
     public CreatedCategoryResponse add(CreateCategoryRequest createCategoryRequest) {
+        categoryBusinessRules.checkIfCategoryNameExists(createCategoryRequest.getName());
+
         Category category = modelMapperService.forRequest().map(createCategoryRequest, Category.class);
 
         Category createdCategory = categoryRepository.save(category);

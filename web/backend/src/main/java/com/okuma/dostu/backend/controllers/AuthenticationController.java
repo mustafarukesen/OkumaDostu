@@ -6,6 +6,7 @@ import com.okuma.dostu.backend.business.dtos.requests.auth.RegisterRequest;
 import com.okuma.dostu.backend.business.dtos.responses.auth.AuthenticationResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest registerRequest
+            @RequestBody @Valid RegisterRequest registerRequest
     ) {
         return ResponseEntity.ok(authenticationService.register(registerRequest));
     }
@@ -31,7 +32,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AuthenticationResponse> login(
-            @RequestBody LoginRequest loginRequest
+            @RequestBody @Valid LoginRequest loginRequest
     ) {
         return ResponseEntity.ok(authenticationService.login(loginRequest));
     }
