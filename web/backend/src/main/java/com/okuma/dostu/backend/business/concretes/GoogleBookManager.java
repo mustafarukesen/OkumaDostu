@@ -40,8 +40,8 @@ public class GoogleBookManager implements GoogleBookService {
 
     @Override
     public void searchAndSaveBooks(String authorName) {
-        String[] words = authorName.split(" ");
-        String apiUrl = String.format(googleBooksApiUrl, words[0], words[1]);
+        String formattedAuthorName = authorName.replace(" ", "%20");
+        String apiUrl = googleBooksApiUrl.replace("%s", formattedAuthorName);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -77,7 +77,7 @@ public class GoogleBookManager implements GoogleBookService {
         if (!publishedDate.isEmpty()) {
             book.setPublishedDate(convertToPublishedDate(publishedDate));
         }
-        if ((book.getIsbn13() == null || book.getIsbn13().isEmpty()) || (book.getDescription() == null || book.getDescription().isEmpty()) || (book.getTitle() == null || book.getTitle().isEmpty()) || (book.getPublishedDate() == null) || (book.getPageCount() < 0) || (book.getThumbnail() == null || book.getThumbnail().isEmpty()))
+        if ((book.getIsbn13() == null || book.getIsbn13().isEmpty()) || (book.getDescription() == null || book.getDescription().isEmpty()) || (book.getTitle() == null || book.getTitle().isEmpty()) || (book.getPublishedDate() == null) || (book.getPageCount() < 0) || (book.getThumbnail() == null || book.getThumbnail().isEmpty()) || getAuthor(volumeInfo.path("authors")) == null || getCategory(volumeInfo.path("categories")) == null|| getPublisher(volumeInfo.path("publisher")) == null)
             return book;
         book.setAuthor(getAuthor(volumeInfo.path("authors")));
         book.setCategory(getCategory(volumeInfo.path("categories")));
@@ -177,7 +177,6 @@ public class GoogleBookManager implements GoogleBookService {
     }
 
     private String removeNonLatinCharacters(String input) {
-        return Normalizer.normalize(input, Normalizer.Form.NFD)
-                .replaceAll("[^\\p{ASCII}]", "");
+        return input.replaceAll("[^\\p{IsAlphabetic}\\sğıüçö]", "");
     }
 }
