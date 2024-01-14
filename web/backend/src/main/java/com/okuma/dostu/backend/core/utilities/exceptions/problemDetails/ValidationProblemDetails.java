@@ -12,7 +12,7 @@ public class ValidationProblemDetails extends ProblemDetails {
     public ValidationProblemDetails() {
         setTitle("Validation Rule Violation");
         setDetail("Validation Problem");
-        setStatus("500");
+        setStatus("400");
     }
 
     private Map<String, String> errors;

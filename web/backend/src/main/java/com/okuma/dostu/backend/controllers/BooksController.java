@@ -3,10 +3,7 @@ package com.okuma.dostu.backend.controllers;
 import com.okuma.dostu.backend.business.abstracts.BookService;
 import com.okuma.dostu.backend.business.dtos.requests.books.CreateBookRequest;
 import com.okuma.dostu.backend.business.dtos.requests.books.UpdateBookRequest;
-import com.okuma.dostu.backend.business.dtos.responses.books.CreatedBookResponse;
-import com.okuma.dostu.backend.business.dtos.responses.books.DeletedBookResponse;
-import com.okuma.dostu.backend.business.dtos.responses.books.GetAllBookResponse;
-import com.okuma.dostu.backend.business.dtos.responses.books.UpdatedBookResponse;
+import com.okuma.dostu.backend.business.dtos.responses.books.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +23,24 @@ public class BooksController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<GetAllBookResponse>> getAll() {
         return ResponseEntity.ok(this.bookService.getAll());
+    }
+
+    @GetMapping("/title")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<GetByTitleBookResponse>> getByTitle(@RequestParam String title) {
+        return ResponseEntity.ok(bookService.getByTitle(title));
+    }
+
+    @GetMapping("/id")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<GetByIdBookResponse> getById(@RequestParam int id) {
+        return ResponseEntity.ok(bookService.getById(id));
+    }
+
+    @GetMapping("/author")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<GetByBooksWithAuthorNameBookResponse>> getByBooksWithAuthorName(String authorName) {
+        return ResponseEntity.ok(bookService.getByBooksWithAuthorName(authorName));
     }
 
     @PostMapping

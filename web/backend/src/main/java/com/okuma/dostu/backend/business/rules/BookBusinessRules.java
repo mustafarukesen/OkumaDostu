@@ -1,6 +1,6 @@
 package com.okuma.dostu.backend.business.rules;
 
-import com.okuma.dostu.backend.business.messages.BookBusinessMessages;
+import com.okuma.dostu.backend.business.messages.business.BookBusinessMessages;
 import com.okuma.dostu.backend.core.utilities.exceptions.types.BusinessException;
 import com.okuma.dostu.backend.dataAccess.abstracts.BookRepository;
 import lombok.AllArgsConstructor;

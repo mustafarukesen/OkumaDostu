@@ -1,5 +1,6 @@
 package com.okuma.dostu.backend.business.dtos.requests.auth;
 
+import com.okuma.dostu.backend.business.messages.validation.AuthenticationValidationMessages;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,11 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    @NotNull
-    @NotBlank
+    @NotNull(message = AuthenticationValidationMessages.notNullEmail)
+    @NotBlank(message = AuthenticationValidationMessages.notBlankEmail)
     private String email;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = AuthenticationValidationMessages.notNullPassword)
+    @NotBlank(message = AuthenticationValidationMessages.notBlankPassword)
     private String password;
 }

@@ -12,6 +12,8 @@ import java.util.List;
 public interface FavoriteRepository extends JpaRepository<Favorite, Integer> {
     boolean existsByUserAndBook(User user, Book book);
 
+    List<Favorite> findByUser(User user);
+
     @Query("select DISTINCT A.name " +
             "FROM Favorite F " +
             "JOIN Book B ON F.book = B " +

@@ -9,7 +9,7 @@ import java.security.Principal;
 import java.util.List;
 
 public interface FavoriteService {
-    List<GetAllFavoriteResponse> getAll();
+    List<GetAllFavoriteResponse> getAll(Principal connectedUser);
 
     CreatedFavoriteResponse add(CreateFavoriteRequest createFavoriteRequest, Principal connectedUser);
 

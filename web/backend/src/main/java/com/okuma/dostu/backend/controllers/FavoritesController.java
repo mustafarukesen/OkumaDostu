@@ -22,8 +22,8 @@ public class FavoritesController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<GetAllFavoriteResponse>> getAll() {
-        return ResponseEntity.ok(favoriteService.getAll());
+    public ResponseEntity<List<GetAllFavoriteResponse>> getAll(Principal connectedUser) {
+        return ResponseEntity.ok(favoriteService.getAll(connectedUser));
     }
 
     @PostMapping

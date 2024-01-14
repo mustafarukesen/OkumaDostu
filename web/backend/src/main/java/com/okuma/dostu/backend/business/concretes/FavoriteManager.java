@@ -5,6 +5,7 @@ import com.okuma.dostu.backend.business.dtos.requests.favorite.CreateFavoriteReq
 import com.okuma.dostu.backend.business.dtos.responses.favorites.CreatedFavoriteResponse;
 import com.okuma.dostu.backend.business.dtos.responses.favorites.DeletedFavoriteResponse;
 import com.okuma.dostu.backend.business.dtos.responses.favorites.GetAllFavoriteResponse;
+import com.okuma.dostu.backend.business.rules.FavoriteBusinessRules;
 import com.okuma.dostu.backend.core.security.user.User;
 import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.BookRepository;
@@ -26,10 +27,13 @@ public class FavoriteManager implements FavoriteService {
     private FavoriteRepository favoriteRepository;
     private BookRepository bookRepository;
     private ModelMapperService modelMapperService;
+    private FavoriteBusinessRules favoriteBusinessRules;
 
     @Override
-    public List<GetAllFavoriteResponse> getAll() {
-        List<Favorite> favorites = favoriteRepository.findAll();
+    public List<GetAllFavoriteResponse> getAll(Principal connectedUser) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+
+        List<Favorite> favorites = favoriteRepository.findByUser(user);
 
         List<GetAllFavoriteResponse> getAllFavoriteResponse = favorites.stream()
                 .map(favorite -> modelMapperService.forResponse()
@@ -44,8 +48,7 @@ public class FavoriteManager implements FavoriteService {
 
         Book book = bookRepository.findById(createFavoriteRequest.getBookId()).orElseThrow();
 
-        if (favoriteRepository.existsByUserAndBook(user, book))
-            throw new IllegalArgumentException("Bu kitap zaten favorilerinizde!");
+        favoriteBusinessRules.checkExistByUserAndBook(user, book);
 
         Favorite favorite = new Favorite();
         favorite.setBook(book);

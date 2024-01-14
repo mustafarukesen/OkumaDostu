@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -77,7 +76,7 @@ public class GoogleBookManager implements GoogleBookService {
         if (!publishedDate.isEmpty()) {
             book.setPublishedDate(convertToPublishedDate(publishedDate));
         }
-        if ((book.getIsbn13() == null || book.getIsbn13().isEmpty()) || (book.getDescription() == null || book.getDescription().isEmpty()) || (book.getTitle() == null || book.getTitle().isEmpty()) || (book.getPublishedDate() == null) || (book.getPageCount() < 0) || (book.getThumbnail() == null || book.getThumbnail().isEmpty()) || getAuthor(volumeInfo.path("authors")) == null || getCategory(volumeInfo.path("categories")) == null|| getPublisher(volumeInfo.path("publisher")) == null)
+        if ((book.getIsbn13() == null || book.getIsbn13().isEmpty()) || (book.getDescription() == null || book.getDescription().isEmpty()) || (book.getTitle() == null || book.getTitle().isEmpty()) || (book.getPublishedDate() == null) || (book.getPageCount() < 0) || (book.getThumbnail() == null || book.getThumbnail().isEmpty()) || getAuthor(volumeInfo.path("authors")) == null || getCategory(volumeInfo.path("categories")) == null || getPublisher(volumeInfo.path("publisher")) == null)
             return book;
         book.setAuthor(getAuthor(volumeInfo.path("authors")));
         book.setCategory(getCategory(volumeInfo.path("categories")));

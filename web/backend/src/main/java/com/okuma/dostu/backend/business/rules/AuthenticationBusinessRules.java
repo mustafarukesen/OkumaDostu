@@ -1,6 +1,6 @@
 package com.okuma.dostu.backend.business.rules;
 
-import com.okuma.dostu.backend.business.messages.AuthenticationBusinessMessages;
+import com.okuma.dostu.backend.business.messages.business.AuthenticationBusinessMessages;
 import com.okuma.dostu.backend.core.security.user.User;
 import com.okuma.dostu.backend.core.utilities.exceptions.types.BusinessException;
 import com.okuma.dostu.backend.dataAccess.abstracts.UserRepository;

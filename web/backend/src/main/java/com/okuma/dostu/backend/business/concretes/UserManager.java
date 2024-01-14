@@ -2,6 +2,7 @@ package com.okuma.dostu.backend.business.concretes;
 
 import com.okuma.dostu.backend.business.abstracts.UserService;
 import com.okuma.dostu.backend.business.dtos.requests.auth.ChangePasswordRequest;
+import com.okuma.dostu.backend.business.rules.UserBusinessRules;
 import com.okuma.dostu.backend.core.security.user.User;
 import com.okuma.dostu.backend.dataAccess.abstracts.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +17,14 @@ import java.security.Principal;
 public class UserManager implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserBusinessRules userBusinessRules;
 
     @Override
     public void changePassword(ChangePasswordRequest changePasswordRequest, Principal connectedUser) {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 
-        if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
-            throw new IllegalStateException("Yanlış Şifre");
-        }
-
-        if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmationPassword())) {
-            throw new IllegalStateException("Şifre aynı değil");
-        }
+        userBusinessRules.checkUserPasswordExists(changePasswordRequest, user);
+        userBusinessRules.checkUserConfirmPasword(changePasswordRequest);
 
         user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
 
