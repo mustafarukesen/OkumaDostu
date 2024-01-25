@@ -14,6 +14,11 @@ class GoogleBookManagerTest {
     @Test
     void saveBookFromGoogleBookManager() {
         googleBookService.searchAndSaveBooks("Emile Zola");
+        googleBookService.searchAndSaveBooks("Victor Hugo");
+        googleBookService.searchAndSaveBooks("Dostoyevski");
+        googleBookService.searchAndSaveBooks("Namık Kemal");
+        googleBookService.searchAndSaveBooks("Ömer Seyfettin");
+        googleBookService.searchAndSaveBooks("Franz Kafka");
         assert(true);
     }
 }

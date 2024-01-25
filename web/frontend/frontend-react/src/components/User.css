@@ -1,0 +1,31 @@
+.profile-container {
+  width: 80%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding-left: 250px;
+  padding-top: 80px;
+}
+
+.profile-section {
+  padding: 20px;
+  background-color: #ffe6be;
+  margin-bottom: 30px;
+  border-radius: 15px;
+}
+
+.profile-card {
+  text-align: start;
+}
+.profile-card h3 {
+  font-size: 40px;
+}
+.profile-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.profile-section li {
+  margin-bottom: 10px;
+}
+.profile-card img {
+  padding-right: 10px;
+}
