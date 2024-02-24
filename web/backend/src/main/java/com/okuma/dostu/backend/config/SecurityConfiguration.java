@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
 
 import static com.okuma.dostu.backend.core.security.user.Role.ADMIN;
 import static com.okuma.dostu.backend.core.security.user.Role.USER;
@@ -26,10 +27,10 @@ import static com.okuma.dostu.backend.core.security.user.Role.USER;
 public class SecurityConfiguration {
 
     private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
-            "/api/v1/books",
-            "/api/v1/categories",
-            "/api/v1/authors",
-            "/api/v1/publishers"};
+            "/api/v1/books/**",
+            "/api/v1/categories/**",
+            "/api/v1/authors/**",
+            "/api/v1/publishers/**"};
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -40,7 +41,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors
+                        .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+                )
+
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
