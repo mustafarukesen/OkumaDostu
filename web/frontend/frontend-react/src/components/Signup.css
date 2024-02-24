@@ -1,0 +1,108 @@
+.ls-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 600px;
+  height: 830px;
+  background: #fff;
+  border-radius: 15px;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
+.ls-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.ls-text {
+  color: #8b5926;
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.ls-underline {
+  width: 61px;
+  height: 6px;
+  background: #8b5926;
+  border-radius: 9px;
+}
+
+.ls-inputs {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 480px;
+  height: 80px;
+  background: #eaeaea;
+  border-radius: 6px;
+  margin-top: 55px;
+  flex-direction: column;
+  gap: 25px;
+  justify-content: center;
+}
+
+.ls-input img {
+  margin: 0px 10px;
+}
+
+.ls-input input {
+  height: 50px;
+  width: 400px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #797979;
+  font-size: 19px;
+}
+
+.ls-forgot-password {
+  padding-left: 62px;
+  margin-top: 27px;
+  color: #797979;
+  font-size: 18px;
+}
+
+.ls-forgot-password span {
+  color: #4c00b4;
+  cursor: pointer;
+}
+
+.ls-submit {
+  display: flex;
+  gap: 30px;
+  margin: 30px auto;
+  justify-content: space-between;
+}
+
+.ls-login {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 220px;
+  height: 59px;
+  color: #fff;
+  background: #8b5926;
+  border-radius: 500px;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ls-signup {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 220px;
+  height: 59px;
+  color: #fff;
+  background: #8b5926;
+  border-radius: 500px;
+  font-size: 19px;
+  font-weight: 700;
+  cursor: pointer;
+}

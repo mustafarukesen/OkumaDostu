@@ -1,0 +1,26 @@
+.o-session {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  color: #fff;
+  background: #8b5926;
+  font-size: 19px;
+  cursor: pointer;
+  margin-left: auto;
+  border-radius: auto;
+  border-radius: 5px;
+  margin-right: 15px;
+}
+.n-welcome {
+  display: contents;
+  font-style: italic;
+  font-size: large;
+}
+
+.nav-menu-item {
+  color: black;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
