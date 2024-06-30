@@ -6,6 +6,8 @@ import com.okuma.dostu.backend.business.dtos.requests.books.UpdateBookRequest;
 import com.okuma.dostu.backend.business.dtos.responses.books.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,10 +27,16 @@ public class BooksController {
         return ResponseEntity.ok(this.bookService.getAll());
     }
 
+    @GetMapping("/pagination")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Page<GetAllBookResponse>> getAllWithPagination(Pageable pageable) {
+        return ResponseEntity.ok(this.bookService.getAllWithPagination(pageable));
+    }
+
     @GetMapping("/title")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<GetByTitleBookResponse>> getByTitle(@RequestParam String title) {
-        return ResponseEntity.ok(bookService.getByTitle(title));
+    public ResponseEntity<Page<GetByTitleBookResponse>> getByTitle(@RequestParam String title, Pageable pageable) {
+        return ResponseEntity.ok(bookService.getByTitle(title, pageable));
     }
 
     @GetMapping("/id")
@@ -39,8 +47,8 @@ public class BooksController {
 
     @GetMapping("/author")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<GetByBooksWithAuthorNameBookResponse>> getByBooksWithAuthorName(String authorName) {
-        return ResponseEntity.ok(bookService.getByBooksWithAuthorName(authorName));
+    public ResponseEntity<Page<GetByAuthorNameBookResponse>> getByBooksWithAuthorName(@RequestParam String authorName, Pageable pageable) {
+        return ResponseEntity.ok(bookService.getByAuthorName(authorName, pageable));
     }
 
     @PostMapping

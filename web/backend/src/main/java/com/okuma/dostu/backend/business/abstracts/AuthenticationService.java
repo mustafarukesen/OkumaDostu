@@ -2,16 +2,13 @@ package com.okuma.dostu.backend.business.abstracts;
 
 import com.okuma.dostu.backend.business.dtos.requests.auth.LoginRequest;
 import com.okuma.dostu.backend.business.dtos.requests.auth.RegisterRequest;
-import com.okuma.dostu.backend.business.dtos.responses.auth.AuthenticationResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.IOException;
+import com.okuma.dostu.backend.business.dtos.responses.auth.LoginResponse;
+import jakarta.mail.MessagingException;
 
 public interface AuthenticationService {
-    AuthenticationResponse register(RegisterRequest registerRequest);
+    void register(RegisterRequest registerRequest) throws MessagingException;
 
-    AuthenticationResponse login(LoginRequest loginRequest);
+    LoginResponse login(LoginRequest loginRequest);
 
-    void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    void activateAccount(String token) throws MessagingException;
 }

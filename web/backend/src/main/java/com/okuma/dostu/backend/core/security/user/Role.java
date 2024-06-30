@@ -1,38 +1,45 @@
 package com.okuma.dostu.backend.core.security.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import static com.okuma.dostu.backend.core.security.user.Permission.*;
+@Getter
+@Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "roles")
+@EntityListeners(AuditingEntityListener.class)
+public class Role {
 
-@RequiredArgsConstructor
-public enum Role {
-    USER(Collections.emptySet()),
-    ADMIN(
-            Set.of(
-                    ADMIN_READ,
-                    ADMIN_CREATE,
-                    ADMIN_UPDATE,
-                    ADMIN_DELETE
-            )
-    );
+    @Id
+    @GeneratedValue
+    private Integer id;
 
-    @Getter
-    private final Set<Permission> permissions;
+    @Column(unique = true)
+    private String name;
 
-    public List<SimpleGrantedAuthority> getAuthorities() {
-        var authorities = getPermissions()
-                .stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .collect(Collectors.toList());
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
+    private List<User> users;
 
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return authorities;
-    }
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    @Column(insertable = false)
+    private LocalDateTime lastModifiedDate;
 }

@@ -1,16 +1,18 @@
 package com.okuma.dostu.backend.business.dtos.requests.auth;
 
 import com.okuma.dostu.backend.business.messages.validation.AuthenticationValidationMessages;
-import jakarta.validation.constraints.Email;
+import com.okuma.dostu.backend.core.utilities.validation.FileType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
-public class RegisterRequest {
+public class UpdateRequest {
+
     @NotNull(message = AuthenticationValidationMessages.notNullFirstName)
     @NotBlank(message = AuthenticationValidationMessages.notBlankFirstName)
     private String firstName;
@@ -19,13 +21,9 @@ public class RegisterRequest {
     @NotBlank(message = AuthenticationValidationMessages.notBlankLastName)
     private String lastName;
 
-    @Email(message = AuthenticationValidationMessages.emailFormat)
-    @NotNull(message = AuthenticationValidationMessages.notNullEmail)
-    @NotBlank(message = AuthenticationValidationMessages.notBlankEmail)
-    private String email;
+    @NotNull(message = AuthenticationValidationMessages.notNullDateOfBirth)
+    private LocalDate dateOfBirth;
 
-    @NotNull(message = AuthenticationValidationMessages.notNullPassword)
-    @NotBlank(message = AuthenticationValidationMessages.notNullPassword)
-    @Size(min = 8, message = AuthenticationValidationMessages.passwordSize)
-    private String password;
+    @FileType(types = {"jpeg", "png"})
+    private String image;
 }

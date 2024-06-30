@@ -3,6 +3,8 @@ package com.okuma.dostu.backend.business.abstracts;
 import com.okuma.dostu.backend.business.dtos.requests.books.CreateBookRequest;
 import com.okuma.dostu.backend.business.dtos.requests.books.UpdateBookRequest;
 import com.okuma.dostu.backend.business.dtos.responses.books.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -10,9 +12,11 @@ public interface BookService {
 
     List<GetAllBookResponse> getAll();
 
-    List<GetByTitleBookResponse> getByTitle(String title);
+    Page<GetAllBookResponse> getAllWithPagination(Pageable pageable);
 
-    List<GetByBooksWithAuthorNameBookResponse> getByBooksWithAuthorName(String authorName);
+    Page<GetByTitleBookResponse> getByTitle(String title, Pageable pageable);
+
+    Page<GetByAuthorNameBookResponse> getByAuthorName(String authorName, Pageable pageable);
 
     GetByIdBookResponse getById(int id);
 

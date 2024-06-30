@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetByBooksWithAuthorNameBookResponse {
+public class GetByAuthorNameBookResponse {
     private int id;
     private String authorName;
     private String categoryName;
