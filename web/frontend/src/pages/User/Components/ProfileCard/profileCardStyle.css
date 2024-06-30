@@ -1,0 +1,3 @@
+.float-start, .ProfileCard {
+    float: inherit !important;
+}
