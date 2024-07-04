@@ -1,0 +1,8 @@
+$primary: #8b5926;
+$background-image: url("/src/assets/background-img.jpg");
+body {
+	background-image: $background-image
+  }
+
+
+@import "node_modules/bootstrap/scss/bootstrap";

@@ -9,6 +9,8 @@ import com.okuma.dostu.backend.core.utilities.mappers.ModelMapperService;
 import com.okuma.dostu.backend.dataAccess.abstracts.BookRepository;
 import com.okuma.dostu.backend.entities.concretes.Book;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +35,16 @@ public class BookManager implements BookService {
     }
 
     @Override
+    public Page<GetAllBookResponse> getAllWithPagination(Pageable pageable) {
+        Page<Book> books = bookRepository.findAll(pageable);
+
+        Page<GetAllBookResponse> responses = books.map(book -> this.modelMapperService.forResponse()
+                .map(book, GetAllBookResponse.class));
+
+        return responses;
+    }
+
+    @Override
     public GetByIdBookResponse getById(int id) {
         Book book = bookRepository.findById(id).orElseThrow();
 
@@ -42,25 +54,21 @@ public class BookManager implements BookService {
     }
 
     @Override
-    public List<GetByTitleBookResponse> getByTitle(String title) {
-        List<Book> books = bookRepository.findByTitle(title);
+    public Page<GetByTitleBookResponse> getByTitle(String title, Pageable pageable) {
+        Page<Book> books = bookRepository.findByTitle(title, pageable);
 
-        List<GetByTitleBookResponse> result = books.stream()
-                .map(book -> modelMapperService.forResponse()
-                        .map(book, GetByTitleBookResponse.class)).collect(Collectors.toList());
+        Page<GetByTitleBookResponse> result = books.map(book -> modelMapperService.forResponse()
+                .map(book, GetByTitleBookResponse.class));
 
         return result;
     }
 
     @Override
-    public List<GetByBooksWithAuthorNameBookResponse> getByBooksWithAuthorName(String authorName) {
-        List<Book> books = bookRepository.findAllByAuthorName(authorName);
+    public Page<GetByAuthorNameBookResponse> getByAuthorName(String authorName, Pageable pageable) {
+        Page<Book> books = bookRepository.findByAuthorName(authorName, pageable);
 
-        List<GetByBooksWithAuthorNameBookResponse> result = books.stream()
-                .map(book -> modelMapperService.forResponse()
-                        .map(book, GetByBooksWithAuthorNameBookResponse.class)).collect(Collectors.toList());
-
-        return result;
+        return books.map(book -> modelMapperService.forResponse()
+                .map(book, GetByAuthorNameBookResponse.class));
     }
 
     @Override

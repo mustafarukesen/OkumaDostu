@@ -1,0 +1,208 @@
+@import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre&display=swap");
+
+* {
+  font-family: "Frank Ruhl Libre", serif;
+}
+
+
+.b-header {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.b-row2 {
+  position: static;
+  top: 0px;
+  right: 100px;
+  text-align: center;
+}
+
+.b-row2 h2 {
+  font-size: 3rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: antiquewhite;
+}
+
+.b-row1 img {
+  position: center;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.b-row1 h1 {
+  color: antiquewhite;
+}
+
+.b-row1 {
+  position: center;
+  top: 100px;
+  left: 100px;
+  text-align: center;
+}
+
+.b-search {
+  display: center;
+  align-items: flex;
+  justify-content: center;
+  padding: 5px;
+}
+
+.b-search input {
+  outline: 0;
+  width: 380px;
+  height: 30px;
+  padding: 0 0.5rem;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.b-search button {
+  outline: none;
+  height: 30px;
+  padding: 0 0.5rem;
+}
+
+.h-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: start;
+  margin-top: 25px;
+  padding: 1rem;
+  border-radius: 1.5rem;
+}
+.b-card {
+  position: relative;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  width: 150px;
+  height: auto;
+  margin-bottom: 10px;
+  box-shadow: 0 5px 5px rgba(212, 185, 150, 0.5);
+  transition: 0.5s;
+  text-align: center;
+}
+
+body .b-card {
+  background-color: #ffd288;
+}
+
+.b-card:hover {
+  transform: scale(0.9);
+  background-color: #ffd288;
+}
+
+.b-card img {
+  width: 100%;
+  height: 200px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.b-card .bottom {
+  display: flex;
+  flex-direction: column;
+}
+
+.b-card-row {
+  display: flex;
+  width: 100%;
+}
+
+.b-card-row > * {
+  flex: 1 0 25%;
+}
+
+
+.b-overlay {
+  min-height: 100vh;
+  min-width: 100%;
+  position: fixed;
+  margin-top: 10px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+.b-overlay-inner {
+  background: white;
+  width: 700px;
+  height: 550px;
+  padding: 1.5rem;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-size: 1.3rem;
+  border-radius: 10px;
+  background-color: #ffe6be;
+  overflow-y: auto;
+}
+.b-overlay-inner .b-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  left: 1rem;
+  bottom: 1rem;
+  outline: none;
+  border: none;
+  font-size: 17px;
+  background-color: transparent;
+}
+.b-overlay-inner .b-inner-box {
+  margin-top: 30px;
+  display: flex;
+}
+.b-overlay-inner .b-inner-box img {
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 150px;
+  height: 200px;
+}
+.b-overlay-inner .b-inner-box h3 {
+  margin-top: 10px;
+}
+.b-overlay-inner .b-inner-box button {
+  outline: none;
+  border: none;
+  width: 100px;
+  border-radius: 5px;
+  background-color: rgb(55, 136, 197);
+  color: white;
+  font-weight: bold;
+  padding: 0.3rem 0.5rem;
+}
+
+.description {
+  margin-top: 2rem;
+  text-align: justify;
+  font-size: 25px;
+  font-style: italic;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+}
+
+.pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  margin: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}

@@ -1,18 +1,15 @@
 package com.okuma.dostu.backend.business.dtos.requests.auth;
 
 import com.okuma.dostu.backend.business.messages.validation.AuthenticationValidationMessages;
-import com.okuma.dostu.backend.core.security.user.Role;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class RegisterRequest {
     @NotNull(message = AuthenticationValidationMessages.notNullFirstName)
     @NotBlank(message = AuthenticationValidationMessages.notBlankFirstName)
@@ -22,12 +19,13 @@ public class RegisterRequest {
     @NotBlank(message = AuthenticationValidationMessages.notBlankLastName)
     private String lastName;
 
+    @Email(message = AuthenticationValidationMessages.emailFormat)
     @NotNull(message = AuthenticationValidationMessages.notNullEmail)
     @NotBlank(message = AuthenticationValidationMessages.notBlankEmail)
     private String email;
 
     @NotNull(message = AuthenticationValidationMessages.notNullPassword)
     @NotBlank(message = AuthenticationValidationMessages.notNullPassword)
+    @Size(min = 8, message = AuthenticationValidationMessages.passwordSize)
     private String password;
-    private Role role;
 }

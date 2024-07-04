@@ -2,12 +2,12 @@ package com.okuma.dostu.backend.core.security.token;
 
 import com.okuma.dostu.backend.core.security.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,19 +15,18 @@ import lombok.NoArgsConstructor;
 public class Token {
     @Id
     @GeneratedValue
-    public Integer id;
+    private Integer id;
 
     @Column(unique = true)
-    public String token;
+    private String token;
 
-    @Enumerated(EnumType.STRING)
-    public TokenType tokenType = TokenType.BEARER;
+    private LocalDateTime createdAt;
 
-    public boolean revoked;
+    private LocalDateTime expiresAt;
 
-    public boolean expired;
+    private LocalDateTime validatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    public User user;
+    @ManyToOne()
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
 }

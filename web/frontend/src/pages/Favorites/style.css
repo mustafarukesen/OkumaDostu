@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre&display=swap");
+
+* {
+  font-family: "Frank Ruhl Libre", serif;
+}
+
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+
+}
+
+.pagination button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  margin: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #45a049;
+}

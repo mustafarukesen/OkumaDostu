@@ -1,6 +1,7 @@
 package com.okuma.dostu.backend.config;
 
 import com.okuma.dostu.backend.core.security.jwt.JwtAuthenticationFilter;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,42 +16,39 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.web.cors.CorsConfiguration;
-
-import static com.okuma.dostu.backend.core.security.user.Role.ADMIN;
-import static com.okuma.dostu.backend.core.security.user.Role.USER;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
     private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
             "/api/v1/books/**",
             "/api/v1/categories/**",
             "/api/v1/authors/**",
-            "/api/v1/publishers/**"};
+            "/api/v1/publishers/**",};
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-    private final LogoutHandler logoutHandler;
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        LogoutHandler customLogoutHandler = (request, response, authentication) -> {
+            // Cookie'yi temizle
+            Cookie cookie = new Cookie("okumadostu-token", null);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(0); // Cookie'yi hemen geçersiz kıl
+            response.addCookie(cookie);
+        };
         http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors
-                        .configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
-                )
 
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .requestMatchers("/api/v1/users/**").hasAnyRole(ADMIN.name(), USER.name())
-                                .requestMatchers("/api/v1/favorites/**").hasAnyRole(ADMIN.name(), USER.name())
-                                .requestMatchers("/api/v1/admin").hasRole(ADMIN.name())
                                 .anyRequest()
                                 .authenticated()
                 )
@@ -58,8 +56,9 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutUrl("/api/v1/auth/logout")
-                        .addLogoutHandler(logoutHandler)
+                        .addLogoutHandler(customLogoutHandler)
                         .logoutSuccessHandler(((request, response, authentication) -> SecurityContextHolder.clearContext())));
+
 
         return http.build();
     }

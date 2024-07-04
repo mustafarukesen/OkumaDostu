@@ -8,6 +8,7 @@ public class AuthenticationValidationMessages {
     public static final String notNullLastName = "Kullanıcı soy ismi geçersiz olamaz";
     public static final String notBlankLastName = "Kullanıcı soy ismi boş olamaz";
 
+    public static final String emailFormat = "Email formatında yazınız";
     public static final String notNullEmail = "Email geçersiz olamaz";
     public static final String notBlankEmail = "Email boş olamaz";
 
@@ -22,4 +23,6 @@ public class AuthenticationValidationMessages {
 
     public static final String notNullConfirmationPassword = "Onaylama şifresi geçersiz olamaz";
     public static final String notBlankConfirmationPassword = "Onaylama şifresi boş olamaz";
+    public static final String passwordSize = "Şifreniz en az 8 karakter olmalı!";
+    public static final String notNullDateOfBirth = "Doğum günü boş olamaz";
 }

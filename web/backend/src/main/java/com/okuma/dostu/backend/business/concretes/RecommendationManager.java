@@ -8,6 +8,9 @@ import com.okuma.dostu.backend.dataAccess.abstracts.BookRepository;
 import com.okuma.dostu.backend.dataAccess.abstracts.FavoriteRepository;
 import com.okuma.dostu.backend.entities.concretes.Book;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -27,23 +30,25 @@ public class RecommendationManager implements RecommendationService {
     private ModelMapperService modelMapperService;
 
     @Override
-    public List<GetAllRecommendationResponse> getAll(Principal connectedUser) {
+    public Page<GetAllRecommendationResponse> getAll(Principal connectedUser, Pageable pageable) {
         var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
 
-        List<String> userFavoriteAuthors = favoriteRepository.findUserAuthors(user);
-        List<String> userFavoriteCategories = favoriteRepository.findUserCategories(user);
+        Page<String> userFavoriteAuthors = favoriteRepository.findUserAuthors(user, pageable);
+        Page<String> userFavoriteCategories = favoriteRepository.findUserCategories(user, pageable);
 
-        List<Book> similarBooks = calculateJaccardSimilarity(userFavoriteAuthors, userFavoriteCategories);
+        List<Book> similarBooks = calculateJaccardSimilarity(userFavoriteAuthors.getContent(), userFavoriteCategories.getContent());
 
         List<GetAllRecommendationResponse> getAllRecommendationResponses = similarBooks.stream()
                 .map(similar -> modelMapperService.forResponse()
-                        .map(similar, GetAllRecommendationResponse.class)).collect(Collectors.toList());
+                        .map(similar, GetAllRecommendationResponse.class))
+                .collect(Collectors.toList());
 
-        return getAllRecommendationResponses;
+        Page<GetAllRecommendationResponse> pageResponse = new PageImpl<>(getAllRecommendationResponses, pageable, similarBooks.size());
+
+        return pageResponse;
     }
 
     private List<Book> calculateJaccardSimilarity(List<String> userFavoriteAuthors, List<String> userFavoriteCategories) {
-
         List<Book> allBooks = bookRepository.findAll();
 
         List<Book> similarBooks = allBooks.stream()
@@ -58,7 +63,8 @@ public class RecommendationManager implements RecommendationService {
 
                     return totalSimilarity > 0.5;
 
-                }).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
 
         Collections.shuffle(similarBooks);
         List<Book> selectedBooks = similarBooks.stream()
