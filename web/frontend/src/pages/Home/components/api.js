@@ -14,6 +14,27 @@ export function loadBooksWithAuthor(authorName, page = 0) {
   });
 }
 
-export function addFavorite(bookId, user) {
-  return http.post("/api/v1/favorites", { params: { bookId, user } });
+export function addFavorite(bookId, token) {
+  return http.post(
+    "/api/v1/favorites",
+    { bookId },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}
+
+export function deleteFavorite(token, id) {
+  return http.delete("/api/v1/favorites", {
+    params: { id },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export function loadFavorites(id) {
+  return http.get("/api/v1/favorites", { params: { id } });
 }

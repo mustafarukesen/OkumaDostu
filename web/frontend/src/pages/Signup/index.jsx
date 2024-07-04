@@ -4,6 +4,7 @@ import { Input } from "@/shared/components/Input";
 import { Alert } from "@/shared/components/Alert";
 import { Button } from "@/shared/components/Button";
 import "./signupStyle.css";
+import { useNavigate } from "react-router-dom";
 
 export function SignUp() {
   const [firstName, setFirstName] = useState();
@@ -53,6 +54,10 @@ export function SignUp() {
     });
   }, [password]);
 
+  function navigateInNewTab(url) {
+    window.open(url, "_blank");
+  }
+
   const onSubmit = async (event) => {
     event.preventDefault();
     setSuccessMessage();
@@ -67,7 +72,8 @@ export function SignUp() {
         password,
       });
       setSuccessMessage(response.data.message);
-      navigate("/");
+      navigateInNewTab("http://localhost:1080");
+      navigate("/")
     } catch (axiosError) {
       if (axiosError.response?.data) {
         if (axiosError.response.data.status === "400") {

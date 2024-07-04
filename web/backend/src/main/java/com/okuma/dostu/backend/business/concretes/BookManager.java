@@ -67,10 +67,8 @@ public class BookManager implements BookService {
     public Page<GetByAuthorNameBookResponse> getByAuthorName(String authorName, Pageable pageable) {
         Page<Book> books = bookRepository.findByAuthorName(authorName, pageable);
 
-        Page<GetByAuthorNameBookResponse> result = books.map(book -> modelMapperService.forResponse()
+        return books.map(book -> modelMapperService.forResponse()
                 .map(book, GetByAuthorNameBookResponse.class));
-
-        return result;
     }
 
     @Override

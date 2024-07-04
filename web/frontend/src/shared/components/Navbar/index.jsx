@@ -3,6 +3,7 @@ import { useAuthDispatch, useAuthState } from "../../state/context";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "./api";
 import "./navStyle.css";
+import { ProfileImage } from "../ProfileImage";
 
 export function Navbar() {
   const authState = useAuthState();
@@ -66,8 +67,27 @@ export function Navbar() {
                 <li className="nav-item">
                   <Link
                     className="nav-link btn btn-primary me-2"
+                    to={`/user/recommendations`}
+                  >
+                    <span className="ms-2">Önerilerim</span>
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link
+                    className="nav-link btn btn-primary me-2"
+                    to={`/user/favorites`}
+                  >
+                    <span className="ms-2">Favorilerim</span>
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link
+                    className="nav-link btn btn-primary me-2"
                     to={`/user/${authState.id}`}
                   >
+                    <ProfileImage width={30} image={authState.image} />
                     <span className="ms-2">
                       {authState.firstName} {authState.lastName}
                     </span>

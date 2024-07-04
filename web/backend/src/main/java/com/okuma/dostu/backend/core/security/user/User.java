@@ -1,6 +1,6 @@
 package com.okuma.dostu.backend.core.security.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.okuma.dostu.backend.core.security.token.Token;
 import com.okuma.dostu.backend.entities.concretes.Favorite;
 import jakarta.persistence.*;
@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties({"tokens", "favorite"})
 public class User implements UserDetails, Principal {
 
     @Id
@@ -64,7 +65,6 @@ public class User implements UserDetails, Principal {
     private List<Role> roles;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Token> tokens;
 
     @OneToMany(mappedBy = "user")

@@ -10,7 +10,6 @@ import "./../style.css";
 
 export function BookList() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [books, setBooks] = useState([]);
   const [apiProgress, setApiProgress] = useState(false);
   const [bookPage, setBookPage] = useState({
     content: [],
@@ -73,7 +72,7 @@ export function BookList() {
           <h2>Kitap Bul</h2>
           <div className="b-search">
             <Input
-              id="book"
+              id="title"
               label="Kitap arayınız"
               type="text"
               placeholder="Kitap ismi arayınız"
@@ -125,7 +124,7 @@ export function BookList() {
                 className="btn btn-outline-primary btn-sm float-start"
                 onClick={() => getBooks(bookPage.number - 1)}
               >
-                Previous
+                Önceki
               </button>
             )}
             {!apiProgress && !bookPage.last && (
@@ -133,7 +132,7 @@ export function BookList() {
                 className="btn btn-outline-primary btn-sm float-end"
                 onClick={() => getBooks(bookPage.number + 1)}
               >
-                Next
+                Sonraki
               </button>
             )}
           </li>

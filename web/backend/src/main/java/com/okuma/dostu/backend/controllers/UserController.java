@@ -9,13 +9,14 @@ import com.okuma.dostu.backend.business.dtos.responses.users.UserUpdateResponse;
 import com.okuma.dostu.backend.core.security.user.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -46,7 +47,7 @@ public class UserController {
 
     @GetMapping("/recommendations")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<GetAllRecommendationResponse>> getUserRecommendations(Principal connectedUser) {
-        return ResponseEntity.ok(recommendationService.getAll(connectedUser));
+    public ResponseEntity<Page<GetAllRecommendationResponse>> getUserRecommendations(Principal connectedUser, Pageable pageable) {
+        return ResponseEntity.ok(recommendationService.getAll(connectedUser, pageable));
     }
 }

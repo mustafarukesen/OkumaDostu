@@ -9,11 +9,11 @@ import java.util.Map;
 @AllArgsConstructor
 public class ValidationProblemDetails extends ProblemDetails {
 
+    private Map<String, String> errors;
+
     public ValidationProblemDetails() {
         setTitle("Validation Rule Violation");
         setDetail("Validation Problem");
         setStatus("400");
     }
-
-    private Map<String, String> errors;
 }

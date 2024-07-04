@@ -4,6 +4,9 @@ import { createBrowserRouter } from "react-router-dom";
 import { SignUp } from "@/pages/Signup";
 import { Login } from "@/pages/Login";
 import { User } from "@/pages/User";
+import { Favorites } from "@/pages/Favorites";
+import { Activation } from "@/pages/Activation";
+import { Recommendations } from "@/pages/Recommendations";
 
 export default createBrowserRouter([
   {
@@ -26,6 +29,18 @@ export default createBrowserRouter([
       {
         path: "/user/:id",
         Component: User,
+      },
+      {
+        path: "/user/favorites",
+        Component: Favorites,
+      },
+      {
+        path: "/activate-account",
+        Component: Activation,
+      },
+      {
+        path: "/user/recommendations",
+        Component: Recommendations,
       },
     ],
   },

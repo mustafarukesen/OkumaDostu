@@ -25,8 +25,7 @@ const authReducer = (authState, action) => {
         firstName: action.data.firstName,
         lastName: action.data.lastName,
         dateOfBirth: action.data.dateOfBirth,
-        // username: action.data.username,
-        // image: action.data.image,
+        image: action.data.image,
       };
     default:
       throw new Error(`unknown action: ${action.type}`);
